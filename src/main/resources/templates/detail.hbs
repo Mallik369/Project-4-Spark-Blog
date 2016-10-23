@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>{{entry.title}}</title>
+        <link href='https://fonts.googleapis.com/css?family=Noto+Serif:400,400italic,700|Noto+Sans:700,400' rel='stylesheet' type='text/css'>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+{{#with entry}}
+    <header>
+        <div class="container">
+            <div class="site-header">
+                <a class="logo" href="/">SparkBlog</a>
+                <a class="new-entry button button-round" href="/new"><i class="material-icons">create</i></a>
+            </div>
+        </div>
+    </header>
+    {{#if flashMessage}}
+        <p id = flash-message>{{flashMessage}}</p>
+    {{/if}}
+    <section>
+        <div class="container">
+            <div class="entry-list single">
+                <article>
+                    <h1>{{title}}</h1>
+                    <time>{{date}}</time>
+                    <div class="entry">
+                        <p>{{body}}</p>
+                        <p><a class="link" href="/edit/{{slug}}">Edit Entry</a></p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="entry-comments">
+        <div class="container">
+            <h2>Comments</h2>
+            {{#each comments}}
+                <div class="comment">
+                    <strong>{{user}}</strong>
+                    <time datetime>{{date}}</time>
+                    <p>{{content}}</p>
+                </div>
+            {{/each}}
+            <div class="new-comment">
+                <form action="/entry/{{slug}}/comment" method="post">
+                    <label for="name"> Name</label>
+                    <input type="text" name="name"><br>
+                    <label for="comment">Comment</label>
+                    <textarea rows="5" name="comment"></textarea>
+                    <input type="submit" value="Post Comment" class="button">
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div>
+            <a href="#">Contact Us</a>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            <a href="#">Terms</a>
+        </div>
+    </footer>
+{{/with}}
+</body>
+</html>
+
+
