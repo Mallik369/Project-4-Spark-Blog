@@ -1,4 +1,4 @@
-package com.SparkYourIdeas.blog.model;
+package com.sparkideas.model;
 
 import java.util.Date;
 

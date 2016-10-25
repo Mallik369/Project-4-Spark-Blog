@@ -1,7 +1,7 @@
-package com.SparkYourIdeas.blog.dao;
+package com.sparkideas.dao;
 
-import com.SparkYourIdeas.blog.model.BlogEntry;
-import com.SparkYourIdeas.blog.model.Comment;
+import com.sparkideas.model.BlogEntry;
+import com.sparkideas.model.Comment;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ public class CommentDaoImpl implements CommentDao{
     public boolean addComment(BlogEntry blog, Comment comment) {
         List<Comment> comments = blog.getComments();
         boolean added = comments.add(comment);
-        //comments.sort( (c1, c2) -> -c1.getCreationTime().compareTo(c2.getCreationTime()));
         return added;
     }
 }

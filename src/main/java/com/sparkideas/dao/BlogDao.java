@@ -1,6 +1,7 @@
-package com.SparkYourIdeas.blog.dao;
+package com.sparkideas.dao;
 
-import com.SparkYourIdeas.blog.model.BlogEntry;
+import com.sparkideas.model.BlogEntry;
+
 import java.util.List;
 
 public interface BlogDao {

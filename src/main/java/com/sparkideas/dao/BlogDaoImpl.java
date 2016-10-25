@@ -1,7 +1,7 @@
-package com.SparkYourIdeas.blog.dao;
+package com.sparkideas.dao;
 
-import com.SparkYourIdeas.blog.Exception.NotFoundException;
-import com.SparkYourIdeas.blog.model.BlogEntry;
+import com.sparkideas.Exception.NotFoundException;
+import com.sparkideas.model.BlogEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +41,7 @@ public class BlogDaoImpl implements BlogDao {
         BlogEntry blogEntry = findEntryBySlug(slug);
         blogEntry.setTitle(title);
         blogEntry.setBody(body);
+        blogEntry.setSlug(slug);
         return blogEntry;
 
     }

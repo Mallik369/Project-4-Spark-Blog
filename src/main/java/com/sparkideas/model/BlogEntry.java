@@ -1,4 +1,4 @@
-package com.SparkYourIdeas.blog.model;
+package com.sparkideas.model;
 import com.github.slugify.Slugify;
 
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 
 public class BlogEntry {
     private String slug;
+    private Slugify slugify = new Slugify();;
     private String title;
     private String body;
     private Date   date;
@@ -16,8 +17,8 @@ public class BlogEntry {
         this.title = title;
         this.body = body;
         date  = new Date();
-        Slugify slugify = new Slugify();
         slug = slugify.slugify(title);
+
     }
 
     public boolean addComment(Comment comment) {
@@ -36,6 +37,10 @@ public class BlogEntry {
 
     public String getSlug() {
         return slug;
+    }
+
+    public void setSlug(String slug1) {
+        this.slug = slug1;
     }
 
     public List<Comment> getComments() {return comments;}

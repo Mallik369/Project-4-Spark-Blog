@@ -1,12 +1,13 @@
-package com.SparkYourIdeas.blog;
+package com.sparkideas;
 
-import com.SparkYourIdeas.blog.Exception.NotFoundException;
-import com.SparkYourIdeas.blog.dao.BlogDao;
-import com.SparkYourIdeas.blog.dao.BlogDaoImpl;
-import com.SparkYourIdeas.blog.dao.CommentDao;
-import com.SparkYourIdeas.blog.dao.CommentDaoImpl;
-import com.SparkYourIdeas.blog.model.BlogEntry;
-import com.SparkYourIdeas.blog.model.Comment;
+import com.github.slugify.Slugify;
+import com.sparkideas.Exception.NotFoundException;
+import com.sparkideas.dao.BlogDao;
+import com.sparkideas.dao.BlogDaoImpl;
+import com.sparkideas.dao.CommentDao;
+import com.sparkideas.dao.CommentDaoImpl;
+import com.sparkideas.model.BlogEntry;
+import com.sparkideas.model.Comment;
 import spark.ModelAndView;
 import spark.Request;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -107,32 +108,57 @@ public class Main {
             Map<String,Object> model = new HashMap<>();
             BlogEntry blogEntry = dao.findEntryBySlug(req.params(":slug"));
             model.put("entry",blogEntry);
+            model.put("flashMessage",captureFlashMessage(req));
             return new ModelAndView(model,"detail.hbs");
         },hbts);
         //Router to display edit.hbs to edit current blog
         get("/edit/:slug",(req,res) -> {
             Map<String,Object> model = new HashMap<>();
             BlogEntry blogEntry = dao.findEntryBySlug(req.params(":slug"));
+            model.put("flashMessage",captureFlashMessage(req));
             model.put("entry",blogEntry);
             return new ModelAndView(model,"edit.hbs");
         },hbts);
         //Router to display Enhanced Content of Blog after submitting by user
         post("/entry/:slug",(req,res) -> {
-            Map<String,Object> model = new HashMap<>();
-            BlogEntry blogEntry = dao.editCurrentBlog(req.queryParams("title")
-                                        ,req.queryParams("entry")
-                                        ,req.params("slug"));
-            model.put("entry",blogEntry);
-            return new ModelAndView(model,"detail.hbs");
+            Slugify slugify = new Slugify();
+            String modifiedTitle = req.queryParams("title"); //modified blogtitle by user
+            String modifiedBody  = req.queryParams("entry"); //modified blogbody by user
+            String modifiedslug = slugify.slugify(modifiedTitle); //modified slug based based changes in title
+            String slug  = req.params("slug");
+            //if the modified_title is empty blog entry is rejected
+            if(!modifiedTitle.isEmpty()) {
+                Map<String, Object> model = new HashMap<>();
+                BlogEntry blogEntry = dao.editCurrentBlog(modifiedTitle
+                        ,modifiedBody,modifiedslug);
+                model.put("entry", blogEntry);
+                res.redirect("/entry/"+modifiedslug);
+                return new ModelAndView(model, "detail.hbs");
+            } else {
+               setFlashMessage(req,"Title can't be Empty"); //Display Flash Message to User
+                res.redirect("/entry/"+slug);
+            }
+            return null;
         },hbts);
         //Adding comment to Blog
         post("/entry/:slug/comment",(req,res) -> {
             String slug = req.params("slug");
             BlogEntry blogEntry = dao.findEntryBySlug(slug);
-            Comment comment = new Comment(req.queryParams("name"),
-                    req.queryParams("comment"));
-            commentDao.addComment(blogEntry,comment);
-            res.redirect("/entry/" + slug);
+            String user = req.queryParams("name");
+            String comment = req.queryParams("comment");
+            //Empty user name is set to Anonymous
+            if(user.isEmpty()) {
+                user = "Anonymous";
+            }
+            //Empty Content is not accepted
+            if (!comment.isEmpty()){
+                Comment comment1 = new Comment(user,comment);
+                commentDao.addComment(blogEntry,comment1);
+                res.redirect("/entry/" + slug);
+            } else{
+                setFlashMessage(req,"Comment Can't be Empty"); //Display Flash Message to User
+                res.redirect("/entry/"+slug);
+            }
             return null;
         },hbts);
         //Router to display not-found.hbs page
