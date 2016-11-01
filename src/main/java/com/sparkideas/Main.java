@@ -6,6 +6,7 @@ import com.sparkideas.dao.BlogDao;
 import com.sparkideas.dao.BlogDaoImpl;
 import com.sparkideas.dao.CommentDao;
 import com.sparkideas.dao.CommentDaoImpl;
+import com.sparkideas.data.DefaultEnteries;
 import com.sparkideas.model.BlogEntry;
 import com.sparkideas.model.Comment;
 import spark.ModelAndView;
@@ -21,11 +22,13 @@ import static spark.Spark.*;
 public class Main {
     private static final BlogDao dao = new BlogDaoImpl();
     private static final CommentDao commentDao = new CommentDaoImpl();
+    private static final DefaultEnteries defaultEnteries = new DefaultEnteries();
     private static final HandlebarsTemplateEngine hbts = new HandlebarsTemplateEngine();
     private static final String FLASH_MESSAGE_KEY = "flash_message"; //display flash Message to user
     private static final String origin=""; //obtain origin path before authentication
     public static void main(String[] args) {
 
+        defaultEnteries.DefaultBlogEntries(dao);
         staticFileLocation("/public"); //path location of css Files
 
         //Handler to set cookie value to password
@@ -167,7 +170,7 @@ public class Main {
             String html = hbts.render(new ModelAndView(null, "not-found.hbs"));
             res.body(html);
         });
-        DefaultBlogEntries();
+
     }
 
     private static void setOrigin(Request req, String path) {
@@ -195,14 +198,5 @@ public class Main {
             req.session().removeAttribute(FLASH_MESSAGE_KEY);
         }
         return message;
-    }
-    //Default Blog Entries
-    private static void DefaultBlogEntries() {
-        dao.addEntry(new BlogEntry("The best day I’ve ever had"
-                ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut rhoncus felis, vel tincidunt neque."));
-        dao.addEntry(new BlogEntry("The absolute worst day I’ve ever had"
-                ,"Cras egestas ac ipsum in posuere. Fusce suscipit, libero id malesuada placerat, orci velit semper metus, quis pulvinar sem nunc vel augue."));
-        dao.addEntry(new BlogEntry("That time at the mall"
-                ,"Etiam pretium, sapien non fermentum consequat, dolor augue gravida lacus, non accumsan lorem odio id risus. Vestibulum pharetra tempor molestie."));
     }
 }
