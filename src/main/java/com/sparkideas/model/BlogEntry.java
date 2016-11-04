@@ -8,7 +8,7 @@ import java.util.List;
 public class BlogEntry {
     private static int blogcount;
     private String slug;
-    private Slugify slugify = new Slugify();;
+    private Slugify slugify = new Slugify();
     private String title;
     private String body;
     private Date   date;
