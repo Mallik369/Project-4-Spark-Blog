@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class BlogEntry {
+    private static int blogcount;
     private String slug;
     private Slugify slugify = new Slugify();;
     private String title;
@@ -14,10 +15,11 @@ public class BlogEntry {
     private List<Comment> comments = new ArrayList<>();;
 
     public BlogEntry(String title, String body) {
+        blogcount++;
         this.title = title;
         this.body = body;
         date  = new Date();
-        slug = slugify.slugify(title);
+        slug = slugify.slugify(title+-blogcount);
 
     }
 

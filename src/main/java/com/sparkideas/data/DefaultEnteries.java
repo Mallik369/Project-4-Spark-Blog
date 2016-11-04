@@ -12,7 +12,7 @@ public class DefaultEnteries {
 
         new BlogEntry("The best day I’ve ever had","Lorem ipsum dolor sit amet, consectetur " +
                 "adipiscing elit. Nunc ut rhoncus felis vel tincidunt neque."),
-        new BlogEntry("The absolute worst day I’ve ever had","Cras egestas ac ipsum in posuere. " +
+        new BlogEntry("The Worst day I’ve ever had","Cras egestas ac ipsum in posuere. " +
                 "Fusce suscipit, libero id malesuada placerat, orci velit semper " +
                 "metus,quis pulvinar sem nunc vel augue."),
         new BlogEntry("That time at the mall","Etiam pretium, sapien non fermentum consequat, " +
