@@ -12,7 +12,7 @@ public class BlogEntry {
     private String title;
     private String body;
     private Date   date;
-    private List<Comment> comments = new ArrayList<>();;
+    private List<Comment> comments = new ArrayList<>();
 
     public BlogEntry(String title, String body) {
         blogcount++;
